@@ -235,8 +235,9 @@ bool KafkaWriter::DoWrite(int num_fields, const threading::Field *const *fields,
 
     // format the log entry
     if (BifConst::Kafka::tag_json) {
-      dynamic_cast<threading::formatter::TaggedJSON *>(formatter)->Describe(
-          &buff, num_fields, fields, vals, additional_message_values);
+      dynamic_cast<threading::formatter::TaggedJSON *>(formatter)
+          ->DescribeTagged(&buff, num_fields, fields, vals,
+                           additional_message_values);
     } else {
       formatter->Describe(&buff, num_fields, fields, vals);
     }
