@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-#  Copyright 2020-2024 Zeek-Kafka
+#  Copyright 2020-2025 Zeek-Kafka
 #  Copyright 2020 The Apache Software Foundation
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,5 +70,4 @@ fi
 # docker compose down
 COMPOSE_PROJECT_NAME="${PROJECT_NAME}" \
   ZEEK_KAFKA_OS="${ZEEK_KAFKA_OS}" \
-  docker-compose down
-
+  docker compose down

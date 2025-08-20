@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2024 Zeek-Kafka
+ * Copyright 2020-2025 Zeek-Kafka
  * Copyright 2015-2020 The Apache Software Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ TaggedJSON::TaggedJSON(std::string sn, MsgThread* t, JSON::TimeFormat tf): JSON(
 TaggedJSON::~TaggedJSON()
 {}
 
-bool TaggedJSON::Describe(ODesc* desc, int num_fields, const Field* const* fields, Value** vals, std::map<std::string,std::string> &const_vals) const
+bool TaggedJSON::DescribeTagged(ODesc* desc, int num_fields, const Field* const* fields, Value** vals, std::map<std::string,std::string> &const_vals) const
 {
     // append the JSON formatted log record itself
     JSON::Describe(desc, num_fields, fields, vals);

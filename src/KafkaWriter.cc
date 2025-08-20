@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2024 Zeek-Kafka
+ * Copyright 2020-2025 Zeek-Kafka
  * Copyright 2015-2020 The Apache Software Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,9 +48,7 @@ KafkaWriter::KafkaWriter(WriterFrontend *frontend)
   mocking = BifConst::Kafka::mock;
 
   // json_timestamps
-  ODesc tsfmt;
-  BifConst::Kafka::json_timestamps->Describe(&tsfmt);
-  json_timestamps.assign((const char *)tsfmt.Bytes(), tsfmt.Len());
+  json_timestamps = zeek::obj_desc_short(BifConst::Kafka::json_timestamps);
 
   // topic name - thread local copy
   topic_name.assign((const char *)BifConst::Kafka::topic_name->Bytes(),
@@ -283,8 +281,9 @@ bool KafkaWriter::DoWrite(int num_fields, const threading::Field *const *fields,
 
     // format the log entry
     if (BifConst::Kafka::tag_json) {
-      dynamic_cast<threading::formatter::TaggedJSON *>(formatter)->Describe(
-          &buff, num_fields, fields, vals, additional_message_values);
+      dynamic_cast<threading::formatter::TaggedJSON *>(formatter)
+          ->DescribeTagged(&buff, num_fields, fields, vals,
+                           additional_message_values);
     } else {
       formatter->Describe(&buff, num_fields, fields, vals);
     }
