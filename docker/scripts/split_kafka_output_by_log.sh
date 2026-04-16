@@ -108,4 +108,3 @@ do
     echo "${BASE_LOG_FILE_NAME},${ZEEK_COUNT},${KAKFA_COUNT}" >> "${RESULTS_FILE}"
   fi
 done
-

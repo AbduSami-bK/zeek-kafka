@@ -47,7 +47,7 @@ event zeek_init() &priority=-10
                                 $writer = Log::WRITER_KAFKAWRITER,
                                 $config = table(["stream_id"] = fmt("%s", stream_id))
                         ];
-        
+
                         Log::add_filter(stream_id, filter);
                 }
         }

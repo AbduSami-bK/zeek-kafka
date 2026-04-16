@@ -94,4 +94,3 @@ echo "==================================================="
 docker exec -w /root "${CONTAINER_NAME}" bash -c "/root/built_in_scripts/build_plugin.sh --plugin-version=${PLUGIN_VERSION}"
 
 echo "Built the plugin"
-

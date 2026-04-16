@@ -88,4 +88,3 @@ find "${TEST_DIRECTORY}" -name "results.csv" \
   -exec column -t -s ',' '{}' \; \
   -exec echo "========================================================" \; \
   -exec echo "" \;
-

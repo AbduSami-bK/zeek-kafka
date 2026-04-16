@@ -75,4 +75,3 @@ echo "CONTAINER_NAME = $CONTAINER_NAME"
 echo "==================================================="
 
 docker exec -i -t "${CONTAINER_NAME}" bash
-

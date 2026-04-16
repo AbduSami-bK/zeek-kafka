@@ -71,4 +71,3 @@ export {
 
         const mock: bool = F &redef;
 }
-

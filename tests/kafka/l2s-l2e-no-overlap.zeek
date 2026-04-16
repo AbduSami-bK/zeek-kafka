@@ -1,4 +1,4 @@
-# 
+#
 #  Copyright 2020-2025 Zeek-Kafka
 #  Copyright 2015-2020 The Apache Software Foundation
 #

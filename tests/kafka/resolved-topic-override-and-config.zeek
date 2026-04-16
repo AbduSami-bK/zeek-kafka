@@ -34,4 +34,3 @@ event zeek_init() &priority=-10
     ];
     Log::add_filter(Conn::LOG, xxx_filter);
 }
-

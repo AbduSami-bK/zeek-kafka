@@ -83,4 +83,3 @@ echo "Configuring kafka plugin"
 # Comment out the load statement for "log-hostcerts-only.zeek" in zeek's
 # default local.zeek as of 3.1.2 in order to log all certificates to x509.log
 sed -i 's%^@load protocols/ssl/log-hostcerts-only%#&%' /usr/local/zeek/share/zeek/site/local.zeek
-

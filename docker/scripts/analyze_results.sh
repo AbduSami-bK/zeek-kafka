@@ -210,4 +210,3 @@ if [[ "${#LOGS_WITH_UNEQUAL_RESULTS[@]}" -gt 0 ]]; then
 
   exit 1
 fi
-

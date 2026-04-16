@@ -104,4 +104,3 @@ done
 
 docker run --rm --network "${NETWORK_NAME}" zeek-kafka_kafka \
   kafka-console-consumer.sh --topic "${KAFKA_TOPIC}" --offset "${OFFSET}" --partition "${PARTITION}" --bootstrap-server kafka-1:9092 --timeout-ms 5000
-
