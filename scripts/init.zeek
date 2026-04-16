@@ -56,7 +56,7 @@ export {
 
         ## Any additional configs to pass to librdkafka
         const kafka_conf: table[string] of string = table(
-                ["metadata.broker.list"] = "localhost:9092"
+                ["bootstrap.servers"] = "localhost:9092"
         ) &redef;
 
         ##  Key value pairs that will be added to outgoing messages at the root level

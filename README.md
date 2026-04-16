@@ -28,13 +28,13 @@ A Zeek log writer that sends logging output to Kafka, providing a convenient mea
 
 `zkg` is the preferred mechanism for installing this plugin, as it will dynamically retrieve, build, test, and load the plugin. Note, that you will still need to [activate](#activation) and configure the plugin after your installation.
 
-1. Install [librdkafka](https://github.com/edenhill/librdkafka), a native client library for Kafka. This plugin has been tested against librdkafka v1.4.4.
+1. Install [librdkafka](https://github.com/edenhill/librdkafka), a native client library for Kafka. This plugin has been tested against librdkafka v2.14.1.
 
     In order to use this plugin within a kerberized Kafka environment, you will also need `libsasl2` installed and will need to pass `--enable-sasl` to the `configure` script.
 
     ```
-    $ curl -L https://github.com/edenhill/librdkafka/archive/v1.4.4.tar.gz | tar xvz
-    $ cd librdkafka-1.4.4/
+    $ curl -L https://github.com/edenhill/librdkafka/archive/v2.14.1.tar.gz | tar xvz
+    $ cd librdkafka-2.14.1/
     $ ./configure
     $ make
     $ sudo make install
@@ -52,7 +52,7 @@ A Zeek log writer that sends logging output to Kafka, providing a convenient mea
     Verify the following REQUIRED external dependencies:
     (Ensure their installation on all relevant systems before proceeding):
       from zeek/seisollc/zeek-kafka (1.2.0):
-        librdkafka ~1.4.2
+        librdkafka >=2.12.0
 
     Proceed? [Y/n]
     zeek/seisollc/zeek-kafka asks for LIBRDKAFKA_ROOT (Path to librdkafka installation tree) ? [/usr/local/lib]
@@ -79,13 +79,13 @@ Manually installing the plugin should *only* occur in situations where installin
 
 These instructions could also be helpful if you were interested in distributing this as a package (such as a deb or rpm).
 
-1. Install [librdkafka](https://github.com/edenhill/librdkafka), a native client library for Kafka. This plugin has been tested against librdkafka v1.4.4.
+1. Install [librdkafka](https://github.com/edenhill/librdkafka), a native client library for Kafka. This plugin has been tested against librdkafka v2.14.1.
 
     In order to use this plugin within a kerberized Kafka environment, you will also need `libsasl2` installed and will need to pass `--enable-sasl` to the `configure` script.
 
     ```
-    $ curl -L https://github.com/edenhill/librdkafka/archive/v1.4.4.tar.gz | tar xvz
-    $ cd librdkafka-1.4.2/
+    $ curl -L https://github.com/edenhill/librdkafka/archive/v2.14.1.tar.gz | tar xvz
+    $ cd librdkafka-2.14.1/
     $ ./configure --enable-sasl
     $ make
     $ sudo make install
@@ -123,7 +123,7 @@ The goal in this example is to send all HTTP and DNS records to a Kafka topic na
 @load packages/zeek-kafka
 redef Kafka::logs_to_send = set(HTTP::LOG, DNS::LOG);
 redef Kafka::kafka_conf = table(
-    ["metadata.broker.list"] = "server1.example.com:9092,server2.example.com:9092"
+    ["bootstrap.servers"] = "server1.example.com:9092,server2.example.com:9092"
 );
 ```
 
@@ -135,7 +135,7 @@ This plugin has the ability send all active logs to the "zeek" kafka topic with 
 @load packages/zeek-kafka
 redef Kafka::send_all_active_logs = T;
 redef Kafka::kafka_conf = table(
-    ["metadata.broker.list"] = "localhost:9092"
+    ["bootstrap.servers"] = "localhost:9092"
 );
 ```
 
@@ -149,7 +149,7 @@ redef Kafka::send_all_active_logs = T;
 redef Kafka::logs_to_exclude = set(Conn::LOG);
 redef Kafka::topic_name = "zeek";
 redef Kafka::kafka_conf = table(
-    ["metadata.broker.list"] = "localhost:9092"
+    ["bootstrap.servers"] = "localhost:9092"
 );
 ```
 
@@ -173,7 +173,7 @@ event zeek_init() &priority=-10
         $name = "kafka-http",
         $writer = Log::WRITER_KAFKAWRITER,
         $config = table(
-                ["metadata.broker.list"] = "localhost:9092"
+                ["bootstrap.servers"] = "localhost:9092"
         ),
         $path = "http"
     ];
@@ -184,7 +184,7 @@ event zeek_init() &priority=-10
         $name = "kafka-dns",
         $writer = Log::WRITER_KAFKAWRITER,
         $config = table(
-                ["metadata.broker.list"] = "localhost:9092"
+                ["bootstrap.servers"] = "localhost:9092"
         ),
         $path = "dns"
     ];
@@ -211,7 +211,7 @@ event zeek_init() &priority=-10
         $writer = Log::WRITER_KAFKAWRITER,
         $pred(rec: HTTP::Info) = { return ! (( |rec$id$orig_h| == 128 || |rec$id$resp_h| == 128 )); },
         $config = table(
-            ["metadata.broker.list"] = "localhost:9092"
+            ["bootstrap.servers"] = "localhost:9092"
         )
     ]);
 
@@ -221,7 +221,7 @@ event zeek_init() &priority=-10
         $writer = Log::WRITER_KAFKAWRITER,
         $pred(rec: DNS::Info) = { return ! (( |rec$id$orig_h| == 128 || |rec$id$resp_h| == 128 )); },
         $config = table(
-            ["metadata.broker.list"] = "localhost:9092"
+            ["bootstrap.servers"] = "localhost:9092"
         )
     ]);
 
@@ -231,7 +231,7 @@ event zeek_init() &priority=-10
         $writer = Log::WRITER_KAFKAWRITER,
         $pred(rec: Conn::Info) = { return ! (( |rec$id$orig_h| == 128 || |rec$id$resp_h| == 128 )); },
         $config = table(
-            ["metadata.broker.list"] = "localhost:9092"
+            ["bootstrap.servers"] = "localhost:9092"
         )
     ]);
 }
@@ -251,7 +251,7 @@ You are able to send a single zeek log to multiple different kafka topics in the
 redef Kafka::logs_to_send = set(DHCP::LOG, RADIUS::LOG, DNS::LOG);
 redef Kafka::topic_name = "zeek";
 redef Kafka::kafka_conf = table(
-    ["metadata.broker.list"] = "server1.example.com:9092,server2.example.com:9092"
+    ["bootstrap.servers"] = "server1.example.com:9092,server2.example.com:9092"
 );
 redef Kafka::tag_json = T;
 
@@ -288,7 +288,7 @@ It is possible to define name value pairs and have them added to each outgoing K
 redef Kafka::logs_to_send = set(HTTP::LOG, DNS::LOG, Conn::LOG, DPD::LOG, FTP::LOG, Files::LOG, Known::CERTS_LOG, SMTP::LOG, SSL::LOG, Weird::LOG, Notice::LOG, DHCP::LOG, SSH::LOG, Software::LOG, RADIUS::LOG, X509::LOG, RFB::LOG, Stats::LOG, CaptureLoss::LOG, SIP::LOG);
 redef Kafka::topic_name = "zeek";
 redef Kafka::tag_json = T;
-redef Kafka::kafka_conf = table(["metadata.broker.list"] = "kafka-1:9092,kafka-2:9092");
+redef Kafka::kafka_conf = table(["bootstrap.servers"] = "kafka-1:9092,kafka-2:9092");
 redef Kafka::additional_message_values = table(["FIRST_STATIC_NAME"] = "FIRST_STATIC_VALUE", ["SECOND_STATIC_NAME"] = "SECOND_STATIC_VALUE");
 redef Kafka::logs_to_exclude = set(Conn::LOG, DHCP::LOG);
 redef Known::cert_tracking = ALL_HOSTS;
@@ -335,11 +335,13 @@ redef Kafka::topic_name = "zeek";
 The global configuration settings for Kafka. These values are passed through
 directly to librdkafka. Any valid librdkafka settings can be defined in this
 table. The full set of valid librdkafka settings are available
-[here](https://github.com/edenhill/librdkafka/blob/v1.4.4/CONFIGURATION.md).
+[here](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md).
+For new deployments, prefer `bootstrap.servers`; `metadata.broker.list` is a
+legacy alias.
 
 ```
 redef Kafka::kafka_conf = table(
-    ["metadata.broker.list"] = "localhost:9092",
+    ["bootstrap.servers"] = "localhost:9092",
     ["client.id"] = "zeek"
 );
 ```
@@ -446,7 +448,7 @@ The following is how the `${ZEEK_HOME}/share/zeek/site/local.zeek` looks:
 redef Kafka::logs_to_send = set(HTTP::LOG, DNS::LOG);
 redef Kafka::topic_name = "zeek";
 redef Kafka::tag_json = T;
-redef Kafka::kafka_conf = table( ["metadata.broker.list"] = "node1:6667"
+redef Kafka::kafka_conf = table( ["bootstrap.servers"] = "node1:6667"
                                , ["security.protocol"] = "SASL_PLAINTEXT"
                                , ["sasl.kerberos.keytab"] = "/etc/security/keytabs/example.headless.keytab"
                                , ["sasl.kerberos.principal"] = "example@EXAMPLE.COM"
