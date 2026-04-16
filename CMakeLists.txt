@@ -17,6 +17,8 @@
 
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(ZeekPlugin_Kafka)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 include(ZeekPlugin)
 find_package(LibRDKafka)
 find_package(OpenSSL)
