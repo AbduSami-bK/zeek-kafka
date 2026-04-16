@@ -27,24 +27,29 @@ TaggedJSON::~TaggedJSON()
 
 bool TaggedJSON::DescribeTagged(ODesc* desc, int num_fields, const Field* const* fields, Value** vals, std::map<std::string,std::string> &const_vals) const
 {
-    // append the JSON formatted log record itself
-    JSON::Describe(desc, num_fields, fields, vals);
-    if (const_vals.size() > 0) {
+  desc->AddRaw("{");
 
-      std::map<std::string, std::string>::iterator it = const_vals.begin();
-      while (it != const_vals.end()) {
-        desc->AddRaw(",");
-        desc->AddRaw("\"");
-        desc->AddRaw(it->first);
-        desc->AddRaw("\": ");
-        desc->AddRaw("\"");
-        desc->AddRaw(it->second);
-        desc->AddRaw("\"");
-        it++;
-      }
+  // 'tag' the json; aka prepend the stream name to the json-formatted log content
+  desc->AddRaw("\"");
+  desc->AddRaw(stream_name);
+  desc->AddRaw("\": "); // append the JSON formatted log record itself
+
+  JSON::Describe(desc, num_fields, fields, vals);
+  if (const_vals.size() > 0) {
+    std::map<std::string, std::string>::iterator it = const_vals.begin();
+    while (it != const_vals.end()) {
+      desc->AddRaw(",");
+      desc->AddRaw("\"");
+      desc->AddRaw(it->first);
+      desc->AddRaw("\": ");
+      desc->AddRaw("\"");
+      desc->AddRaw(it->second);
+      desc->AddRaw("\"");
+      it++;
     }
-
-    return true;
+  }
+  desc->AddRaw("}");
+  return true;
 }
 
 } // namespaces
