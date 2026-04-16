@@ -31,11 +31,13 @@ function help {
   echo " "
   echo "USAGE"
   echo "    --zeek-kafka-os     [OPTIONAL] The OS to run zeek and zeek-kafka in. Default: ubuntu"
+  # echo "    --zeek-kafka-os     [OPTIONAL] The OS to run zeek and zeek-kafka in. Default: centos"
   echo "    -h/--help           Usage information."
 }
 
 PROJECT_NAME="zeek-kafka"
 ZEEK_KAFKA_OS="ubuntu"
+# ZEEK_KAFKA_OS="centos"
 
 # Handle command line options
 for i in "$@"; do
@@ -61,9 +63,11 @@ for i in "$@"; do
 done
 
 if [[ "${ZEEK_KAFKA_OS}" == "ubuntu" ]]; then
-  ZEEK_KAFKA_OS="ubuntu:20.04"
+  ZEEK_KAFKA_OS="ubuntu:24.04"
+elif [[ "${ZEEK_KAFKA_OS}" == "centos" ]]; then
+  ZEEK_KAFKA_OS="centos:8"
 else
-  echo "OS must be ubuntu"
+  echo "OS must be ubuntu or centos"
   exit 1
 fi
 

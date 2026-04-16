@@ -123,7 +123,7 @@ testing scripts to be added to a pull request, and subsequently to a test suite.
   --kafka-topic                  [OPTIONAL] The kafka topic to get the offset from. Default: zeek
   ```
 - `download_sample_pcaps.sh`: Downloads the sample pcaps to a specified directory. If they exist, it is a no-op
-  
+
    > The sample pcaps are:
    >  -  https://github.com/zeek/try-zeek/blob/master/manager/static/pcaps/exercise_traffic.pcap
    >  -  http://downloads.digitalcorpora.org/corpora/scenarios/2008-nitroba/nitroba.pcap
